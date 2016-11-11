@@ -4,7 +4,7 @@ CFLAGS = -g
 
 programs: $(PROGRAMS)
 
-main: Database.o
+main: Database.o 
 
 clean:
 	-rm $(PROGRAMS) *.o
