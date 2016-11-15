@@ -17,6 +17,8 @@
 
 #define TABLE_LENGTH 1009
 
+
+//definitions for CSG
 typedef struct CSG *CSGList;
 typedef struct CSG {
 	char course[6];
@@ -45,7 +47,7 @@ typedef struct CSGLinkedListNode {
 } CSGLinkedListNode;
 
 extern CSGBase *CSGBase_new();
-extern CSG *CSG_new();
+extern CSG *CSG_new(char *course, char *studentID, char *grade);
 extern int CSGHash(char* course, char *studentID);
 extern int CSGHash_id(char *studentID);
 extern int CSGHash_course(char *course);
@@ -59,6 +61,173 @@ extern CSGLinkedListNode *CSGLinkedListNode_new(CSG *data);
 extern void CSGLinkedList_add(CSGLinkedList *list, CSG *data);
 extern void delete_CSG(CSGBase *database, char *course, char *studentID, char *grade);
 extern void deleteFromIndices_CSG(CSGBase *database, char *course, char *studentID, char *grade);
+
+
+// definitions for SNAP
+typedef struct SNAP *SNAPList;
+typedef struct SNAP {
+	char studentID[6];
+	char name[21];
+	char address[21];
+	char phone[11];
+	SNAPList next;
+	SNAPList nameIndexNext;
+
+} SNAP;
+typedef SNAPList SNAPTable[TABLE_LENGTH];
+typedef struct {
+	SNAPTable table;
+	SNAPTable nameIndex;
+	
+} SNAPBase;
+
+typedef struct SNAPLinkedList {
+    struct SNAPLinkedListNode *first;
+    struct SNAPLinkedListNode *last;
+} SNAPLinkedList;
+
+typedef struct SNAPLinkedListNode {
+    SNAP *data;
+    struct SNAPLinkedListNode *next;
+    struct SNAPLinkedListNode *prev;
+} SNAPLinkedListNode;
+
+
+extern SNAPBase *SNAPBase_new();
+extern SNAP *SNAP_new(char *studentID, char *name, char *address, char *phone);
+extern int SNAPHash(char *studentID);
+extern int SNAPHash_name(char *name);
+extern bool isTaken_SNAP(SNAPTable table, int index);
+extern void insert_SNAP(SNAPBase *table, char *studentID, char *name, char *address, char *phone);
+extern bool SNAP_add(SNAPBase *database, int index, SNAP *toAdd, int kind);
+extern SNAPLinkedList *lookup_SNAP(SNAPBase *database, char *studentID, char *name);
+extern void printList_SNAP(SNAPLinkedList *list);
+extern SNAPLinkedList *SNAPLinkedList_new();
+extern SNAPLinkedListNode *SNAPLinkedListNode_new(SNAP *data);
+extern void SNAPLinkedList_add(SNAPLinkedList *list, SNAP *data);
+extern void delete_SNAP(SNAPBase *database, char *studentID, char *name);
+extern void deleteFromIndices_SNAP(SNAPBase *database, char *studentID, char *name);
+
+
+//definitions for CP
+
+typedef struct CP *CPList;
+typedef struct CP {
+	char course[6];
+	char prereq[6];
+	CPList next;
+} CP;
+
+typedef CPList CPTable[TABLE_LENGTH];
+typedef struct {
+	CPTable table;
+} CPBase;
+
+typedef struct CPLinkedList {
+    struct CPLinkedListNode *first;
+    struct CPLinkedListNode *last;
+} CPLinkedList;
+
+typedef struct CPLinkedListNode {
+    CP *data;
+    struct CPLinkedListNode *next;
+    struct CPLinkedListNode *prev;
+} CPLinkedListNode;
+
+extern CPBase *CPBase_new();
+extern CP *CP_new(char *course, char *prereq);;
+extern int CPHash(char *course);
+extern bool isTaken_CP(CPTable table, int index);
+extern void insert_CP(CPBase *table, char *course, char *prereq);
+extern bool CP_add(CPBase *database, int index, CP *toAdd);
+extern CPLinkedList *lookup_CP(CPBase *database, char *course);
+extern void printList_CP(CPLinkedList *list);
+extern CPLinkedList *CPLinkedList_new();
+extern CPLinkedListNode *CPLinkedListNode_new(CP *data);
+extern void CPLinkedList_add(CPLinkedList *list, CP *data);
+extern void delete_CP(CPBase *database, char *course, char *prereq);
+
+//definitions for CDH
+typedef struct CDH *CDHList;
+typedef struct CDH {
+	char course[6];
+	char day[3];
+	char hour[5];
+	CDHList next;
+	CDHList courseIndexNext;
+	CDHList dayIndexNext;
+} CDH;
+typedef CDHList CDHTable[TABLE_LENGTH];
+typedef struct {
+	CDHTable table;
+	CDHTable courseIndex;
+	CDHTable dayIndex;
+} CDHBase;
+
+typedef struct CDHLinkedList {
+    struct CDHLinkedListNode *first;
+    struct CDHLinkedListNode *last;
+} CDHLinkedList;
+
+typedef struct CDHLinkedListNode {
+    CDH *data;
+    struct CDHLinkedListNode *next;
+    struct CDHLinkedListNode *prev;
+} CDHLinkedListNode;
+
+extern CDHBase *CDHBase_new();
+extern CDH *CDH_new(char *course, char *day, char *hour);
+extern int CDHHash(char *course, char *day);
+extern int CDHHash_course(char *course);
+extern int CDHHash_day(char *day);
+extern bool isTaken_CDH(CDHTable table, int index);
+extern void insert_CDH(CDHBase *table, char *course, char *day, char *hour);
+extern bool CDH_add(CDHBase *database, int index, CDH *toAdd, int kind);
+extern CDHLinkedList *lookup_CDH(CDHBase *database, char *course, char *day, char *hour);
+extern void printList_CDH(CDHLinkedList *list);
+extern CDHLinkedList *CDHLinkedList_new();
+extern CDHLinkedListNode *CDHLinkedListNode_new(CDH *data);
+extern void CDHLinkedList_add(CDHLinkedList *list, CDH *data);
+extern void delete_CDH(CDHBase *database, char *course, char *day, char *hour);
+extern void deleteFromIndices_CDH(CDHBase *database, char *course, char *day, char *hour);
+
+//definitions for CR
+
+typedef struct CR *CRList;
+typedef struct CR {
+	char course[6];
+	char room[15];
+	CRList next;
+} CR;
+
+typedef CRList CRTable[TABLE_LENGTH];
+typedef struct {
+	CRTable table;
+} CRBase;
+
+typedef struct CRLinkedList {
+    struct CRLinkedListNode *first;
+    struct CRLinkedListNode *last;
+} CRLinkedList;
+
+typedef struct CRLinkedListNode {
+    CR *data;
+    struct CRLinkedListNode *next;
+    struct CRLinkedListNode *prev;
+} CRLinkedListNode;
+
+extern CRBase *CRBase_new();
+extern CR *CR_new(char *course, char *room);;
+extern int CRHash(char *course);
+extern bool isTaken_CR(CRTable table, int index);
+extern void insert_CR(CRBase *table, char *course, char *room);
+extern bool CR_add(CRBase *database, int index, CR *toAdd);
+extern CRLinkedList *lookup_CR(CRBase *database, char *course);
+extern void printList_CR(CRLinkedList *list);
+extern CRLinkedList *CRLinkedList_new();
+extern CRLinkedListNode *CRLinkedListNode_new(CR *data);
+extern void CRLinkedList_add(CRLinkedList *list, CR *data);
+extern void delete_CR(CRBase *database, char *course, char *room);
 
 
 #endif
