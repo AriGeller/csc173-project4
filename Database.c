@@ -1755,3 +1755,143 @@ void delete_CR(CRBase *database, char *course, char *room) {
 	}
 }
 		
+CSGBaseList *CSGBaseList_new() {
+	CSGBaseList *list = (CSGBaseList*)malloc(sizeof(CSGBaseList));
+    list->first = list->last = NULL;
+    return list;
+}
+
+CSGBaseListNode *CSGBaseListNode_new(CSGBase *data) {
+	CSGBaseListNode *node = (CSGBaseListNode*)malloc(sizeof(CSGBaseListNode));
+    if (node == NULL) {
+	abort();
+    }
+    node->data = data;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+void CSGBaseList_add(CSGBaseList *list, CSGBase *data) {
+	CSGBaseListNode *node = CSGBaseListNode_new(data);
+    node->next = list->first;
+    if (list->first != NULL) {
+	list->first->prev = node;
+    }
+    list->first = node;
+    if (list->last == NULL) {
+	list->last = node;
+    }
+}
+
+SNAPBaseList *SNAPBaseList_new() {
+	SNAPBaseList *list = (SNAPBaseList*)malloc(sizeof(SNAPBaseList));
+    list->first = list->last = NULL;
+    return list;
+}
+
+SNAPBaseListNode *SNAPBaseListNode_new(SNAPBase *data) {
+	SNAPBaseListNode *node = (SNAPBaseListNode*)malloc(sizeof(SNAPBaseListNode));
+    if (node == NULL) {
+	abort();
+    }
+    node->data = data;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+void SNAPBaseList_add(SNAPBaseList *list, SNAPBase *data) {
+	SNAPBaseListNode *node = SNAPBaseListNode_new(data);
+    node->next = list->first;
+    if (list->first != NULL) {
+	list->first->prev = node;
+    }
+    list->first = node;
+    if (list->last == NULL) {
+	list->last = node;
+    }
+}
+
+CPBaseList *CPBaseList_new() {
+	CPBaseList *list = (CPBaseList*)malloc(sizeof(CPBaseList));
+    list->first = list->last = NULL;
+    return list;
+}
+
+CPBaseListNode *CPBaseListNode_new(CPBase *data) {
+	CPBaseListNode *node = (CPBaseListNode*)malloc(sizeof(CPBaseListNode));
+    if (node == NULL) {
+	abort();
+    }
+    node->data = data;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+void CPBaseList_add(CPBaseList *list, CPBase *data) {
+	CPBaseListNode *node = CPBaseListNode_new(data);
+    node->next = list->first;
+    if (list->first != NULL) {
+	list->first->prev = node;
+    }
+    list->first = node;
+    if (list->last == NULL) {
+	list->last = node;
+    }
+}
+
+
+CDHBaseList *CDHBaseList_new() {
+	CDHBaseList *list = (CDHBaseList*)malloc(sizeof(CDHBaseList));
+    list->first = list->last = NULL;
+    return list;
+}
+
+CDHBaseListNode *CDHBaseListNode_new(CDHBase *data) {
+	CDHBaseListNode *node = (CDHBaseListNode*)malloc(sizeof(CDHBaseListNode));
+    if (node == NULL) {
+	abort();
+    }
+    node->data = data;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+void CDHBaseList_add(CDHBaseList *list, CDHBase *data) {
+	CDHBaseListNode *node = CDHBaseListNode_new(data);
+    node->next = list->first;
+    if (list->first != NULL) {
+	list->first->prev = node;
+    }
+    list->first = node;
+    if (list->last == NULL) {
+	list->last = node;
+    }
+}
+
+CRBaseList *CRBaseList_new() {
+	CRBaseList *list = (CRBaseList*)malloc(sizeof(CRBaseList));
+    list->first = list->last = NULL;
+    return list;
+}
+
+CRBaseListNode *CRBaseListNode_new(CRBase *data) {
+	CRBaseListNode *node = (CRBaseListNode*)malloc(sizeof(CRBaseListNode));
+    if (node == NULL) {
+	abort();
+    }
+    node->data = data;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+void CRBaseList_add(CRBaseList *list, CRBase *data) {
+	CRBaseListNode *node = CRBaseListNode_new(data);
+    node->next = list->first;
+    if (list->first != NULL) {
+	list->first->prev = node;
+    }
+    list->first = node;
+    if (list->last == NULL) {
+	list->last = node;
+    }
+}

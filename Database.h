@@ -230,4 +230,80 @@ extern void CRLinkedList_add(CRLinkedList *list, CR *data);
 extern void delete_CR(CRBase *database, char *course, char *room);
 
 
+typedef struct CSGBaseList {
+	struct CSGBaseListNode *first;
+	struct CSGBaseListNode *last;
+} CSGBaseList;
+
+typedef struct CSGBaseListNode {
+	CSGBase *data;
+	struct CSGBaseListNode *next;
+	struct CSGBaseListNode *prev;
+} CSGBaseListNode;
+
+extern CSGBaseList *CSGBaseList_new();
+extern CSGBaseListNode *CSGBaseListNode_new(CSGBase *data);
+extern void CSGBaseList_add(CSGBaseList *list, CSGBase *data);
+
+typedef struct SNAPBaseList {
+	struct SNAPBaseListNode *first;
+	struct SNAPBaseListNode *last;
+} SNAPBaseList;
+
+typedef struct SNAPBaseListNode {
+	SNAPBase *data;
+	struct SNAPBaseListNode *next;
+	struct SNAPBaseListNode *prev;
+} SNAPBaseListNode;
+
+extern SNAPBaseList *SNAPBaseList_new();
+extern SNAPBaseListNode *SNAPBaseListNode_new(SNAPBase *data);
+extern void SNAPBaseList_add(SNAPBaseList *list, SNAPBase *data);
+
+typedef struct CPBaseList {
+	struct CPBaseListNode *first;
+	struct CPBaseListNode *last;
+} CPBaseList;
+
+typedef struct CPBaseListNode {
+	CPBase *data;
+	struct CPBaseListNode *next;
+	struct CPBaseListNode *prev;
+} CPBaseListNode;
+
+extern CPBaseList *CPBaseList_new();
+extern CPBaseListNode *CPBaseListNode_new(CPBase *data);
+extern void CPBaseList_add(CPBaseList *list, CPBase *data);
+
+typedef struct CDHBaseList {
+	struct CDHBaseListNode *first;
+	struct CDHBaseListNode *last;
+} CDHBaseList;
+
+typedef struct CDHBaseListNode {
+	CDHBase *data;
+	struct CDHBaseListNode *next;
+	struct CDHBaseListNode *prev;
+} CDHBaseListNode;
+
+extern CDHBaseList *CDHBaseList_new();
+extern CDHBaseListNode *CDHBaseListNode_new(CDHBase *data);
+extern void CDHBaseList_add(CDHBaseList *list, CDHBase *data);
+
+typedef struct CRBaseList {
+	struct CRBaseListNode *first;
+	struct CRBaseListNode *last;
+} CRBaseList;
+
+typedef struct CRBaseListNode {
+	CRBase *data;
+	struct CRBaseListNode *next;
+	struct CRBaseListNode *prev;
+} CRBaseListNode;
+
+extern CRBaseList *CRBaseList_new();
+extern CRBaseListNode *CRBaseListNode_new(CRBase *data);
+extern void CRBaseList_add(CRBaseList *list, CRBase *data);
+
+
 #endif
