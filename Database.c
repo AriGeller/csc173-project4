@@ -1049,6 +1049,7 @@ CDH *CDH_new(char *course, char *day, char *hour) {
 	int temp = 0;
 	for (int i = 0; i < strlen(day); i++) {
 		new -> day[i] = day[i];
+		temp += 1;
 	}
 	new -> day[temp + 1] = '\0';
 	temp = 0;
