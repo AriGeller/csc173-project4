@@ -15,6 +15,7 @@
 
 void writeDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBaseList *CDHs, CRBaseList *CRs);
 void readDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBaseList *CDHs, CRBaseList *CRs);
+void findGrade(CSGBase *CSGdatabase, SNAPBase *SNAPDatabase, char *name, char *course);
 
 int main(int argc, char const *argv[])
 {
@@ -80,7 +81,9 @@ int main(int argc, char const *argv[])
 	// insert_CR(myCRDatabase, "EE200", "25 Ohm Hall");
 	// insert_CR(myCRDatabase, "PH100", "Newton Lab.");
 	// printList_CR(lookup_CR(myCRDatabase, "*"));
-
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
 	writeDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
 	
 
@@ -348,4 +351,22 @@ void readDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBa
 		
 	}
 	fscanf(fp, "%s\n", input);
+}
+
+void findGrade(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, char *name, char *course) {
+	SNAPLinkedList *tempSnap = lookup_SNAP(SNAPDatabase, "*", name);
+	if (tempSnap -> first != NULL) {
+		char *id = tempSnap -> first -> data -> studentID;
+		CSGLinkedList *tempCSG = lookup_CSG(CSGDatabase, course, id, "*");
+		if (tempCSG -> first != NULL) {
+			char *grade = tempCSG -> first -> data -> grade;
+			printf("%s got a grade of %s in %s.\n", name, grade, course);
+		} else {
+			printf("Sorry, %s never took %s.\n", name, course);
+		}
+	} else {
+		printf("Sorry, we have no record of a student named %s.\n", name);
+	}
+	
+
 }

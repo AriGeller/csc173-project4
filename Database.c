@@ -1896,3 +1896,4 @@ void CRBaseList_add(CRBaseList *list, CRBase *data) {
 	list->last = node;
     }
 }
+
