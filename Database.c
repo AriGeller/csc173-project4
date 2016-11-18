@@ -185,6 +185,7 @@ CSGLinkedList *lookup_CSG(CSGBase *database, char *course, char *studentID, char
 	if (!courseIsStar && !idIsStar) {
 		int index = CSGHash(course, studentID);
 		if (database -> table[index] == NULL) {
+			printf("I guess it is NULL\n");
 		} else {
 			CSG *test = database -> table[index];
 			while (test != NULL) {
@@ -1222,6 +1223,7 @@ CDHLinkedList *lookup_CDH(CDHBase *database, char *course, char *day, char *hour
 		} else {
 			CDH *test = database -> table[index];
 			while (test != NULL) {
+				printf("loop1");
 				if (strcmp(test -> course, course) == 0 && strcmp(test -> day, day) == 0) {
 					CDHLinkedList_add(list, test);	
 				}
@@ -1234,6 +1236,7 @@ CDHLinkedList *lookup_CDH(CDHBase *database, char *course, char *day, char *hour
 		} else {
 			CDH *test = database -> courseIndex[index];
 			while(test != NULL) {
+				printf("loop2");
 				if (strcmp(test -> course, course) == 0) {
 					CDHLinkedList_add(list, test);
 					
@@ -1247,6 +1250,7 @@ CDHLinkedList *lookup_CDH(CDHBase *database, char *course, char *day, char *hour
 		} else {
 			CDH *test = database -> courseIndex[index];
 			while(test != NULL) {
+				printf("loop3");
 				if (strcmp(test -> course, course) == 0 && strcmp(test -> hour, hour) == 0) {
 					CDHLinkedList_add(list, test);
 				} 
@@ -1259,6 +1263,7 @@ CDHLinkedList *lookup_CDH(CDHBase *database, char *course, char *day, char *hour
 		} else {
 			CDH *test = database -> dayIndex[index];
 			while (test != NULL) {
+				printf("loop4");
 				if (strcmp(test -> day, day) == 0) {
 					CDHLinkedList_add(list, test);
 				}
@@ -1274,13 +1279,15 @@ CDHLinkedList *lookup_CDH(CDHBase *database, char *course, char *day, char *hour
 				if (strcmp(test -> day, day) == 0 && strcmp(test -> hour, hour) == 0) {
 					CDHLinkedList_add(list, test);
 				}
+				test = test -> dayIndexNext;
 			}
 		}
-	} else if (courseIsStar && day && hour) {
+	} else if (courseIsStar && dayIsStar && hourIsStar) {
 		for (int i = 0; i < TABLE_LENGTH; i++) {
 			if (database -> table[i] != NULL) {
 				CDH *toAdd = database -> table[i];
 				while(toAdd != NULL) {
+					printf("loop6");
 					CDHLinkedList_add(list, toAdd);
 					toAdd = toAdd -> next;
 				}
