@@ -29,7 +29,7 @@ CSG *CSG_new(char *course, char *studentID, char *grade) {
 		new -> studentID[i] = studentID[i];
 	}
 	new -> studentID[5] = '\0';
-	for (int i = 0; i < 2; i ++) {
+	for (int i = 0; i < 2; i++) {
 		new -> grade[i] = grade[i];
 	}
 	new -> grade[2] = '\0';
@@ -1902,5 +1902,125 @@ void CRBaseList_add(CRBaseList *list, CRBase *data) {
     if (list->last == NULL) {
 	list->last = node;
     }
+}
+
+GenRelList *GenRelList_new() {
+	GenRelList *list = (GenRelList*)malloc(sizeof(GenRelList));
+    list->first = list->last = NULL;
+    return list;
+}
+
+GenRelListNode *GenRelListNode_new(GenRel *data) {
+	GenRelListNode *node = (GenRelListNode*)malloc(sizeof(GenRelListNode));
+    if (node == NULL) {
+	abort();
+    }
+    node->data = data;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+void GenRelList_add(GenRelList *list, GenRel *data) {
+	GenRelListNode *node = GenRelListNode_new(data);
+    node->next = list->first;
+    if (list->first != NULL) {
+	list->first->prev = node;
+    }
+    list->first = node;
+    if (list->last == NULL) {
+	list->last = node;
+    }
+}
+
+GenRel *GenRel_new(char *course, char *studentID, char *grade, char *name, char *address, char *phone, char *day, char *hour, char *prereq, char *room) {
+	GenRel *new = (GenRel*)malloc(sizeof(GenRel));
+	if (course != NULL) {
+		for (int i = 0; i < 5; i++) {
+			new -> course[i] = course[i];
+		}
+		new -> course[5] = '\0';
+	} else {
+		new -> course = NULL;
+	}
+	if (studentID != NULL) {
+		for (int i = 0; i < 5; i++) {
+			new -> studentID[i] = studentID[i];
+		}
+		new -> studentID[5] = '\0';
+	} else {
+		new -> studentID = NULL;
+	}
+	if (grade != NULL) {
+		for (int i = 0; i < 2; i++) {
+			new -> grade[i] = grade[i];
+		}
+		new -> grade[5] = '\0';
+	} else {
+		new -> grade = NULL;
+	}
+	if (name != NULL) {
+		int temp = 0;
+		for (int i = 0; strlen(name); i++) {
+			new -> name[i] = name[i];
+			temp++;
+		}
+		new -> name[temp + 1] = '\0';
+	} else {
+		new -> name = NULL;
+	}
+	if (address != NULL) {
+		int temp = 0;
+		for (int i = 0; strlen(address); i++) {
+			new -> address[i] = address[i];
+			temp++;
+		}
+		new -> address[temp + 1] = '\0';
+	} else {
+		new -> address = NULL;
+	}
+	if (phone != NULL) {
+		for (int i = 0; i < 10; i++) {
+			new -> phone[i] = phone[i];
+		}
+		new -> phone[10] = '\0';
+	} else {
+		new -> phone = NULL;
+	}
+	if (day != NULL) {
+		int temp = 0;
+		for (int i = 0; strlen(day); i++) {
+			new -> day[i] = day[i];
+		}
+		new -> day[temp + 1] = '\0';
+	} else {
+		new -> day = NULL;
+	}
+	if (hour != NULL) {
+		int temp = 0;
+		for (int i = 0; strlen(hour); i++) {
+			new -> hour[i] = hour[i];
+		}
+		new -> hour[temp + 1] = '\0';
+	} else {
+		new -> hour = NULL;
+	}
+	if (prereq != NULL) {
+		for (int i = 0; i < 5; i++) {
+			new -> prereq[i] = prereq[i];
+		}
+		new -> prereq[5] = '\0';
+	} else {
+		new -> prereq = NULL;
+	}
+	if (room != NULL) {
+		int temp = 0;
+		for (int i = 0; strlen(room); i++) {
+			new -> room[i] = room[i];
+			temp++;
+		}
+		new -> room[temp + 1] = '\0';
+	} else {
+		new -> temp = NULL;
+	}
 }
 

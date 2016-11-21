@@ -306,4 +306,35 @@ extern CRBaseListNode *CRBaseListNode_new(CRBase *data);
 extern void CRBaseList_add(CRBaseList *list, CRBase *data);
 
 
+typedef struct GenRel {
+	char course[6];
+	char studentID[6];
+	char grade[3];
+	char studentID[6];
+	char name[21];
+	char address[21];
+	char phone[11];
+	char prereq[6];
+	char day[3];
+	char hour[5];
+	char room[15];
+} GenRel;
+
+typdef struct GenRelList {
+	struct GenRelListNode *first;
+	struct GenRelListNode *last;
+}
+
+typedef struct GenRelListNode {
+	GenRel *data;
+	struct GenRelListNode *next;
+} GenRelListNode;
+
+extern GenRelList *GenRelList_new();
+extern GenRelListNode *GenRelistNode_new(GenRel *data);
+extern void GenRelList_add(GenRelList *list, GenRel *data);
+extern GenRel *GenRel_new();
+
+
+
 #endif

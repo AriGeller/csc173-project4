@@ -30,63 +30,63 @@ int main(int argc, char const *argv[])
 	printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "*", "*"));
 
 	
-	CSGBase *myCSGDatabase = CSGBase_new();
-	CSGBaseList_add(CSGs, myCSGDatabase);
+	// CSGBase *myCSGDatabase = CSGBase_new();
+	// CSGBaseList_add(CSGs, myCSGDatabase);
 
-	insert_CSG(myCSGDatabase, "CS101", "12345", "A");
-	insert_CSG(myCSGDatabase, "CS101", "67890", "B");
-	insert_CSG(myCSGDatabase, "EE200", "12345", "C");
-	insert_CSG(myCSGDatabase, "EE200", "22222", "B+");
-	insert_CSG(myCSGDatabase, "CS101", "33333", "A-");
-	insert_CSG(myCSGDatabase, "PH100", "67890", "C+");
-	insert_CSG(myCSGDatabase, "CS101", "12346", "A");
-	printList_CSG(lookup_CSG(myCSGDatabase, "*", "*", "*"));
-	//delete_CSG(myCSGDatabase, "CS101", "12345", "*");
-	printList_CSG(lookup_CSG(myCSGDatabase, "CS101", "12345", "*"));
-	printList_CSG(lookup_CSG(myCSGDatabase, "CS101", "*", "F"));
+	// insert_CSG(myCSGDatabase, "CS101", "12345", "A");
+	// insert_CSG(myCSGDatabase, "CS101", "67890", "B");
+	// insert_CSG(myCSGDatabase, "EE200", "12345", "C");
+	// insert_CSG(myCSGDatabase, "EE200", "22222", "B+");
+	// insert_CSG(myCSGDatabase, "CS101", "33333", "A-");
+	// insert_CSG(myCSGDatabase, "PH100", "67890", "C+");
+	// insert_CSG(myCSGDatabase, "CS101", "12346", "A");
+	// printList_CSG(lookup_CSG(myCSGDatabase, "*", "*", "*"));
+	// //delete_CSG(myCSGDatabase, "CS101", "12345", "*");
+	// printList_CSG(lookup_CSG(myCSGDatabase, "CS101", "12345", "*"));
+	// printList_CSG(lookup_CSG(myCSGDatabase, "CS101", "*", "F"));
 	
-	SNAPBase *mySNAPDatabase = SNAPBase_new();
-	SNAPBaseList_add(SNAPs, mySNAPDatabase);
-	insert_SNAP(mySNAPDatabase, "12345", "C. Brown", "12 Apple St.", "555-1234");
-	insert_SNAP(mySNAPDatabase, "67890", "L. Van Pelt", "34 Pear St.", "555-6789");
-	insert_SNAP(mySNAPDatabase, "22222", "P. Patty", "56 Grape Blvd.", "555-9999");
-	printList_SNAP(lookup_SNAP(mySNAPDatabase, "*", "C. Brown"));
+	// SNAPBase *mySNAPDatabase = SNAPBase_new();
+	// SNAPBaseList_add(SNAPs, mySNAPDatabase);
+	// insert_SNAP(mySNAPDatabase, "12345", "C. Brown", "12 Apple St.", "555-1234");
+	// insert_SNAP(mySNAPDatabase, "67890", "L. Van Pelt", "34 Pear St.", "555-6789");
+	// insert_SNAP(mySNAPDatabase, "22222", "P. Patty", "56 Grape Blvd.", "555-9999");
+	// printList_SNAP(lookup_SNAP(mySNAPDatabase, "*", "C. Brown"));
 
 
-	CPBase *myCPDatabase = CPBase_new();
-	CPBaseList_add(CPs, myCPDatabase);
-	insert_CP(myCPDatabase, "CS101", "CS100");
-	insert_CP(myCPDatabase, "EE200", "EE005");
-	insert_CP(myCPDatabase, "EE200", "CS100");
-	insert_CP(myCPDatabase, "CS120", "CS101");
-	insert_CP(myCPDatabase, "CS121", "CS120");
-	insert_CP(myCPDatabase, "CS205", "CS101");
-	insert_CP(myCPDatabase, "CS206", "CS121");
-	insert_CP(myCPDatabase, "CS206", "CP205");
-	printList_CP(lookup_CP(myCPDatabase, "*"));
+	// CPBase *myCPDatabase = CPBase_new();
+	// CPBaseList_add(CPs, myCPDatabase);
+	// insert_CP(myCPDatabase, "CS101", "CS100");
+	// insert_CP(myCPDatabase, "EE200", "EE005");
+	// insert_CP(myCPDatabase, "EE200", "CS100");
+	// insert_CP(myCPDatabase, "CS120", "CS101");
+	// insert_CP(myCPDatabase, "CS121", "CS120");
+	// insert_CP(myCPDatabase, "CS205", "CS101");
+	// insert_CP(myCPDatabase, "CS206", "CS121");
+	// insert_CP(myCPDatabase, "CS206", "CP205");
+	// printList_CP(lookup_CP(myCPDatabase, "*"));
 
 
-	CDHBase *myCDHDatabase = CDHBase_new();
-	CDHBaseList_add(CDHs, myCDHDatabase);
-	insert_CDH(myCDHDatabase, "CS101", "M", "9AM");
-	insert_CDH(myCDHDatabase, "CS101", "W", "9AM");
-	insert_CDH(myCDHDatabase, "CS101", "F", "9AM");
-	insert_CDH(myCDHDatabase, "EE200", "Tu", "10AM");
-	insert_CDH(myCDHDatabase, "EE200", "W", "1PM");
-	insert_CDH(myCDHDatabase, "EE200", "Th", "10AM");
-	printList_CDH(lookup_CDH(myCDHDatabase, "*", "*", "*"));
+	// CDHBase *myCDHDatabase = CDHBase_new();
+	// CDHBaseList_add(CDHs, myCDHDatabase);
+	// insert_CDH(myCDHDatabase, "CS101", "M", "9AM");
+	// insert_CDH(myCDHDatabase, "CS101", "W", "9AM");
+	// insert_CDH(myCDHDatabase, "CS101", "F", "9AM");
+	// insert_CDH(myCDHDatabase, "EE200", "Tu", "10AM");
+	// insert_CDH(myCDHDatabase, "EE200", "W", "1PM");
+	// insert_CDH(myCDHDatabase, "EE200", "Th", "10AM");
+	// printList_CDH(lookup_CDH(myCDHDatabase, "*", "*", "*"));
 
-	CRBase *myCRDatabase = CRBase_new();
-	CRBaseList_add(CRs, myCRDatabase);
-	insert_CR(myCRDatabase, "CS101", "Turing Atd.");
-	insert_CR(myCRDatabase, "EE200", "25 Ohm Hall");
-	insert_CR(myCRDatabase, "PH100", "Newton Lab.");
-	printList_CR(lookup_CR(myCRDatabase, "*"));
-	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
-	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
-	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
-	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
-	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
+	// CRBase *myCRDatabase = CRBase_new();
+	// CRBaseList_add(CRs, myCRDatabase);
+	// insert_CR(myCRDatabase, "CS101", "Turing Atd.");
+	// insert_CR(myCRDatabase, "EE200", "25 Ohm Hall");
+	// insert_CR(myCRDatabase, "PH100", "Newton Lab.");
+	// printList_CR(lookup_CR(myCRDatabase, "*"));
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
+	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
+	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
 	writeDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
 	
 
@@ -359,7 +359,11 @@ void readDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBa
 void findGrade(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, char *name, char *course) {
 	SNAPLinkedList *tempSnap = lookup_SNAP(SNAPDatabase, "*", name);
 	if (tempSnap -> first != NULL) {
-		char *id = tempSnap -> first -> data -> studentID;
+		SNAPLinkedListNode *node = tempSnap -> first;
+		while(strcmp(node -> data -> name, name) != 0) {
+			node = node -> next;
+		}
+		char *id = node -> data -> studentID;
 		CSGLinkedList *tempCSG = lookup_CSG(CSGDatabase, course, id, "*");
 		if (tempCSG -> first != NULL) {
 			char *grade = tempCSG -> first -> data -> grade;
