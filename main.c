@@ -88,7 +88,9 @@ int main(int argc, char const *argv[])
 	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
 	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
 	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
-	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
+	printf("\n\n\n");
+	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
+	printf("\n\n\n");
 	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
 	
 	GenRelList *CSGTest = convert_CSG(CSGs -> first -> data);
@@ -396,26 +398,37 @@ void findGrade(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, char *name, char *c
 void findRoom(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, CDHBase *CDHDatabase, CRBase *CRDatabase, char *name, char *hour,char *day) {
 	SNAPLinkedList *tempSnap = lookup_SNAP(SNAPDatabase, "*", name);
 	if (tempSnap -> first != NULL) {
-		char *id = tempSnap -> first -> data -> studentID;
-		CDHLinkedList *tempCDH = lookup_CDH(CDHDatabase, "*", day, hour);
-		if (tempCDH -> first != NULL) {
-			char *course = tempCDH -> first -> data ->course;
-			CSGLinkedList *tempCSG = lookup_CSG(CSGDatabase, course , id, "*");
+		SNAPLinkedListNode *node = tempSnap -> first;
+		while(node != NULL){
+			char *id = node -> data -> studentID;
+			CSGLinkedList *tempCSG = lookup_CSG(CSGDatabase, "*" , id, "*");
 			if (tempCSG -> first != NULL) {
-				char *course = tempCSG -> first -> data -> course;
-				CRLinkedList *tempCR = lookup_CR(CRDatabase, course);
-				if (tempCR -> first != NULL) {
-					char *room = tempCR -> first -> data -> room;
-					printf("%s is in %s room at %s on %s.\n", name, room, hour, day);
-				} else {
-					printf("Sorry, %s never took %s.\n", name, hour);
+				CSGLinkedListNode *CSGnode = tempCSG -> first;
+				while(CSGnode != NULL){
+					char *course = CSGnode -> data ->course;
+					CDHLinkedList *tempCDH = lookup_CDH(CDHDatabase, "*", day, hour);
+					if (tempCDH -> first != NULL) {
+						char *course = tempCDH -> first -> data -> course;
+						CRLinkedList *tempCR = lookup_CR(CRDatabase, course);
+						if (tempCR -> first != NULL) {
+							char *room = tempCR -> first -> data -> room;
+							printf("%s is in %s room at %s on %s.\n", name, room, hour, day);
+						} else {
+							printf("Sorry, %s never took %s.\n", name, hour);
+						}
+					} else {
+						printf("Sorry, %s never took %s.\n", name, hour);
+					}
+					CSGnode  = CSGnode->next;
 				}
+
 			} else {
 				printf("Sorry, %s never took %s.\n", name, hour);
 			}
-		} else {
-			printf("Sorry, %s never took %s.\n", name, hour);
+
+			 node=node->next;
 		}
+
 	} else {
 		printf("Sorry, we have no record of a student named %s.\n", name);
 	}
