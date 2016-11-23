@@ -1921,6 +1921,7 @@ GenRelListNode *GenRelListNode_new(GenRel *data) {
 }
 
 void GenRelList_add(GenRelList *list, GenRel *data) {
+	printf("inside add method\n");
 	GenRelListNode *node = GenRelListNode_new(data);
     node->next = list->first;
     if (list->first != NULL) {
@@ -1933,94 +1934,351 @@ void GenRelList_add(GenRelList *list, GenRel *data) {
 }
 
 GenRel *GenRel_new(char *course, char *studentID, char *grade, char *name, char *address, char *phone, char *day, char *hour, char *prereq, char *room) {
+	printf("inside new method\n");
 	GenRel *new = (GenRel*)malloc(sizeof(GenRel));
-	if (course != NULL) {
-		for (int i = 0; i < 5; i++) {
-			new -> course[i] = course[i];
-		}
-		new -> course[5] = '\0';
+	
+	new -> course = course;
+	new -> studentID = studentID;
+	new -> grade = grade;
+	new -> name = name;
+	new -> address = address;
+	new -> phone = phone;
+	new -> day = day;
+	new -> hour = hour;
+	new -> prereq = prereq;
+	new -> room = room;
+	printf("returning new\n");
+
+	return new;
+}
+
+bool sameString(char *thing1, char *thing2) {
+	if (thing1 == NULL || thing2 == NULL) {
+		return false;
+	} else if (strcmp(thing1, thing2) == 0) {
+		return true;
 	} else {
-		new -> course = NULL;
-	}
-	if (studentID != NULL) {
-		for (int i = 0; i < 5; i++) {
-			new -> studentID[i] = studentID[i];
-		}
-		new -> studentID[5] = '\0';
-	} else {
-		new -> studentID = NULL;
-	}
-	if (grade != NULL) {
-		for (int i = 0; i < 2; i++) {
-			new -> grade[i] = grade[i];
-		}
-		new -> grade[5] = '\0';
-	} else {
-		new -> grade = NULL;
-	}
-	if (name != NULL) {
-		int temp = 0;
-		for (int i = 0; strlen(name); i++) {
-			new -> name[i] = name[i];
-			temp++;
-		}
-		new -> name[temp + 1] = '\0';
-	} else {
-		new -> name = NULL;
-	}
-	if (address != NULL) {
-		int temp = 0;
-		for (int i = 0; strlen(address); i++) {
-			new -> address[i] = address[i];
-			temp++;
-		}
-		new -> address[temp + 1] = '\0';
-	} else {
-		new -> address = NULL;
-	}
-	if (phone != NULL) {
-		for (int i = 0; i < 10; i++) {
-			new -> phone[i] = phone[i];
-		}
-		new -> phone[10] = '\0';
-	} else {
-		new -> phone = NULL;
-	}
-	if (day != NULL) {
-		int temp = 0;
-		for (int i = 0; strlen(day); i++) {
-			new -> day[i] = day[i];
-		}
-		new -> day[temp + 1] = '\0';
-	} else {
-		new -> day = NULL;
-	}
-	if (hour != NULL) {
-		int temp = 0;
-		for (int i = 0; strlen(hour); i++) {
-			new -> hour[i] = hour[i];
-		}
-		new -> hour[temp + 1] = '\0';
-	} else {
-		new -> hour = NULL;
-	}
-	if (prereq != NULL) {
-		for (int i = 0; i < 5; i++) {
-			new -> prereq[i] = prereq[i];
-		}
-		new -> prereq[5] = '\0';
-	} else {
-		new -> prereq = NULL;
-	}
-	if (room != NULL) {
-		int temp = 0;
-		for (int i = 0; strlen(room); i++) {
-			new -> room[i] = room[i];
-			temp++;
-		}
-		new -> room[temp + 1] = '\0';
-	} else {
-		new -> temp = NULL;
+		return false;
 	}
 }
 
+GenRelList *select(GenRelList *list, char *type, char *param) {
+	GenRelList *result = GenRelList_new();
+	GenRelListNode *node = list -> first;
+	while (node != NULL) {
+		if (sameString(type, "prereq") && sameString(node -> data -> prereq, param)) {
+			GenRelList_add(result, node -> data);
+		} else if (sameString(type, "course") && sameString(node -> data -> course, param)) {
+			GenRelList_add(result, node -> data);
+		} else if (sameString(param, node -> data -> studentID) || sameString(param, node -> data -> grade) || sameString(param, node -> data -> name) || sameString(param, node -> data -> address) || sameString(param, node -> data -> phone) || sameString(param, node -> data -> day) || sameString(param, node -> data -> hour) || sameString(param, node -> data -> room)) {
+			GenRelList_add(result, node -> data);
+		}
+		node = node -> next;
+
+ 	}
+ 	return result;
+}
+
+GenRelList *project(GenRelList *list, char *param) {
+	GenRelList *result = GenRelList_new();
+	GenRelListNode *node = list -> first;
+	while (node != NULL) {
+		if (sameString(param, "course") && node -> data -> course != NULL && projectHelper(result, node -> data -> course)) {
+			GenRelList_add(result, GenRel_new(node -> data -> course, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL));
+		} else if (sameString(param, "studentID") && node -> data -> studentID != NULL && projectHelper(result, node -> data -> studentID)) {
+			GenRelList_add(result, GenRel_new(NULL, node -> data -> studentID, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL));
+		} else if (sameString(param, "grade") && node -> data -> grade != NULL && projectHelper(result, node -> data -> grade)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, node -> data -> grade, NULL, NULL, NULL, NULL, NULL, NULL, NULL));
+		} else if (sameString(param, "name") && node -> data -> name != NULL && projectHelper(result, node -> data -> name)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, node -> data -> name, NULL, NULL, NULL, NULL, NULL, NULL));
+		} else if (sameString(param, "address") && node -> data -> address != NULL && projectHelper(result, node -> data -> address)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, NULL, node -> data -> address, NULL, NULL, NULL, NULL, NULL));
+		} else if (sameString(param, "phone") && node -> data -> phone != NULL && projectHelper(result, node -> data -> phone)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, NULL, NULL, node -> data -> phone, NULL, NULL, NULL, NULL));
+		} else if (sameString(param, "day") && node -> data -> day != NULL && projectHelper(result, node -> data -> day)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, NULL, NULL, NULL, node -> data -> day, NULL, NULL, NULL));
+		} else if (sameString(param, "hour") && node -> data -> hour!= NULL && projectHelper(result, node -> data -> hour)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, NULL, NULL, NULL, NULL, node -> data -> hour, NULL, NULL));
+		} else if (sameString(param, "prereq") && node -> data -> prereq != NULL && projectHelper(result, node -> data -> prereq)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, node -> data -> prereq, NULL));
+		} else if (sameString(param, "room") && node -> data -> room != NULL && projectHelper(result, node -> data -> room)) {
+			GenRelList_add(result, GenRel_new(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, node -> data -> room));
+		}
+		node = node -> next;
+	}
+
+	return result;
+}
+
+bool projectHelper(GenRelList *list, char *param) {
+	printf("inside helper method\n");
+	GenRelListNode *node = list -> first;
+	if (node == NULL) {
+		printf("node is null returning false\n");
+		return true;
+	}
+	while (node != NULL) {
+		printf("inside while loop\n");
+		if (sameString(node -> data -> course, param)  || sameString(node -> data -> studentID, param) || sameString(node -> data -> grade, param) || sameString(node -> data -> name, param) || sameString(node -> data -> address, param) || sameString(node -> data -> phone, param) || sameString(node -> data -> day, param) || sameString(node -> data -> hour, param) || sameString(node -> data -> prereq, param) || sameString(node -> data -> room, param)) {
+			printf("node matches param. returining false\n");
+			return false;
+		}
+		node = node -> next;
+	}
+	printf("nothing found. returning true\n");
+	return true;
+}
+
+GenRelList *join(GenRelList *list1, GenRelList *list2, char *param){
+	printf("Inside join\n");
+	GenRelList *result = GenRelList_new();
+	printf("created result\n");
+	if (sameString(param, "course")) {
+		printf("param is course\n");
+		GenRelListNode *list1Node = list1 -> first;
+		printf("found list1Node\n");
+		while(list1Node != NULL) {
+			printf("inside first while\n");
+			GenRelListNode *list2Node = list2 -> first;
+			printf("found list2Node\n");
+			while (list2Node != NULL) {
+				printf("inside second while\n");
+				if (sameString(list1Node -> data -> course, list2Node -> data -> course)) {
+					printf("found tuples to join\n");
+					GenRelList_add(result, combo(list1Node -> data, list2Node -> data));
+					printf("after combo method\n");
+				}
+				printf("iterating list2\n");
+				list2Node = list2Node -> next;
+			}
+			printf("iterating list1\n");
+			list1Node = list1Node -> next;
+		}
+	} else if (sameString(param, "studentID")) {
+		GenRelListNode *list1Node = list1 -> first;
+		while(list1Node != NULL) {
+			GenRelListNode *list2Node = list2 -> first;
+			while (list2Node != NULL) {
+				if (sameString(list1Node -> data -> studentID, list2Node -> data -> studentID)) {
+					GenRelList_add(result, combo(list1Node -> data, list2Node -> data));
+				}
+				list2Node = list2Node -> next;
+			}
+			list1Node = list1Node -> next;
+		}
+	}
+	printf("returning result\n");
+	return result;
+}
+
+
+GenRel *combo(GenRel *rel1, GenRel *rel2) {
+	char *course; 
+	char *studentID;
+	char *grade;
+	char *name;
+	char *address;
+	char *phone;
+	char *day;
+	char *hour;
+	char *prereq;
+	char *room;
+	if (rel1 -> course != NULL) {
+		course = rel1 -> course;
+	} else if (rel2 -> course != NULL) {
+		course = rel2 -> course;
+	} else {
+		course = NULL;
+	}
+	if (rel1 -> studentID != NULL) {
+		studentID = rel1 -> studentID;
+	} else if (rel2 -> course != NULL) {
+		studentID = rel2 -> studentID;
+	} else {
+		grade = NULL;
+	}
+	if (rel1 -> grade != NULL) {
+		grade = rel1 -> grade;
+	} else if (rel2 -> grade!= NULL) {
+		grade = rel2 -> grade;
+	} else {
+		grade = NULL;
+	}
+	if (rel1 -> name != NULL) {
+		name = rel1 -> name;
+	} else if (rel2 -> name != NULL) {
+		name = rel2 -> name;
+	} else {
+		name = NULL;
+	}
+	if (rel1 -> address != NULL) {
+		address = rel1 -> address;
+	} else if (rel2 -> address != NULL) {
+		address = rel2 -> address;
+	} else {
+		address = NULL;
+	}
+	if (rel1 -> phone != NULL) {
+		phone = rel1 -> phone;
+	} else if (rel2 -> phone != NULL) {
+		phone = rel2 -> phone;
+	} else {
+		phone = NULL;
+	}
+	if (rel1 -> day != NULL) {
+		day = rel1 -> day;
+	} else if (rel2 -> day != NULL) {
+		day = rel2 -> day;
+	} else {
+		day = NULL;
+	}
+	if (rel1 -> hour != NULL) {
+		hour = rel1 -> hour;
+	} else if (rel2 -> hour != NULL) {
+		hour = rel2 -> hour;
+	} else {
+		hour = NULL;
+	}
+	if (rel1 -> prereq != NULL) {
+		prereq = rel1 -> prereq;
+	} else if (rel2 -> prereq != NULL) {
+		prereq = rel2 -> prereq;
+	} else {
+		prereq = NULL;
+	}
+	if (rel1 -> room != NULL) {
+		room = rel1 -> room;
+	} else if (rel2 -> room != NULL) {
+		room = rel2 -> room;
+	} else {
+		room = NULL;
+	}
+
+	return GenRel_new(course, studentID, grade, name, address, phone, day, hour, prereq, room);
+}
+
+
+GenRelList *convert_CSG(CSGBase *database) {
+	GenRelList *result = GenRelList_new();
+	for (int i = 0; i < TABLE_LENGTH; i++) {
+		if (database -> table[i] != NULL) {
+			CSG *item = database -> table[i];
+			while(item != NULL) {
+				char *course = item -> course;
+				char *studentID = item -> studentID;
+				char *grade = item -> grade;
+				GenRelList_add(result, GenRel_new(course, studentID, grade, NULL, NULL, NULL, NULL, NULL, NULL, NULL));
+				item = item -> next;
+			}
+		}
+	}
+	return result;
+
+}
+
+GenRelList *convert_SNAP(SNAPBase *database) {
+    GenRelList *result = GenRelList_new();
+    for (int i = 0; i < TABLE_LENGTH; i++) {
+        if (database -> table[i] != NULL) {
+            SNAP *item = database -> table[i];
+            while(item != NULL) {
+                char *name = item -> name;
+                char *studentID = item -> studentID;
+                char *address = item -> address;
+                char *phone = item -> phone;
+                GenRelList_add(result, GenRel_new(NULL, studentID, NULL, name, address, phone, NULL, NULL, NULL, NULL));
+                item = item -> next;
+            }
+        }
+    }
+    return result;
+}
+
+GenRelList *convert_CDH(CDHBase *database) {
+    GenRelList *result = GenRelList_new();
+    for (int i = 0; i < TABLE_LENGTH; i++) {
+        if (database -> table[i] != NULL) {
+            CDH *item = database -> table[i];
+            while(item != NULL) {
+                char *course = item -> course;
+                char *day = item -> day;
+                char *hour = item -> hour;
+                GenRelList_add(result, GenRel_new(course, NULL, NULL, NULL, NULL, NULL, day, hour, NULL, NULL));
+                item = item -> next;
+            }
+        }
+    }
+    return result;
+}
+
+GenRelList *convert_CP(CPBase *database) {
+    GenRelList *result = GenRelList_new();
+    for (int i = 0; i < TABLE_LENGTH; i++) {
+        if (database -> table[i] != NULL) {
+            CP *item = database -> table[i];
+            while(item != NULL) {
+                char *course = item -> course;
+                char *prereq = item -> prereq;
+                GenRelList_add(result, GenRel_new(course, NULL, NULL, NULL, NULL, NULL, NULL, NULL, prereq, NULL));
+                item = item -> next;
+            }
+        }
+    }
+    return result;
+}
+
+GenRelList *convert_CR(CRBase *database) {
+    GenRelList *result = GenRelList_new();
+    for (int i = 0; i < TABLE_LENGTH; i++) {
+        if (database -> table[i] != NULL) {
+            CR *item = database -> table[i];
+            while(item != NULL) {
+                char *course = item -> course;
+                char *room = item -> room;
+                GenRelList_add(result, GenRel_new(course, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, room));
+                item = item -> next;
+            }
+        }
+    }
+    return result;
+}
+
+void GenRelList_print(GenRelList *list) {
+	GenRelListNode *node = list -> first;
+	while (node != NULL) {
+		printf("NEW\n");
+		if (node -> data -> course != NULL) {
+			printf("Course: %s\n", node -> data -> course);
+		}
+		if (node -> data -> studentID != NULL) {
+			printf("ID: %s\n", node -> data -> studentID);
+		}
+		if (node -> data -> grade != NULL) {
+			printf("Grade: %s\n", node -> data -> grade);
+		}
+		if (node -> data -> name != NULL) {
+			printf("Name: %s\n", node -> data -> name);
+		}
+		if (node -> data -> address != NULL) {
+			printf("Address: %s\n", node -> data -> address);
+		}
+		if (node -> data -> phone != NULL) {
+			printf("Phone: %s\n", node -> data -> phone);
+		}
+		if (node -> data -> day != NULL) {
+			printf("Day: %s\n", node -> data -> day);
+		}
+		if (node -> data -> hour != NULL) {
+			printf("Hour: %s\n", node -> data -> hour);
+		}
+		if (node -> data -> prereq != NULL) {
+			printf("Prerequisite: %s\n", node -> data -> prereq);
+		}
+		if (node -> data -> room != NULL) {
+			printf("Room: %s\n", node -> data -> room);
+		}
+		printf("DONE\n");
+		node = node -> next;
+	}
+
+}

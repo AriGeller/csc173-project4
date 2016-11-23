@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
 	CRBaseList *CRs = CRBaseList_new();
 
 	readDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
-	printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "*", "*"));
+	//printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "*", "*"));
 
 	
 	// CSGBase *myCSGDatabase = CSGBase_new();
@@ -82,11 +82,25 @@ int main(int argc, char const *argv[])
 	// insert_CR(myCRDatabase, "EE200", "25 Ohm Hall");
 	// insert_CR(myCRDatabase, "PH100", "Newton Lab.");
 	// printList_CR(lookup_CR(myCRDatabase, "*"));
-	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
-	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
-	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
+
+
+
+	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
+	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
+	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
 	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
 	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
+	
+	GenRelList *CSGTest = convert_CSG(CSGs -> first -> data);
+	GenRelList *SNAPTest = convert_SNAP(SNAPs -> first -> data);
+	printf("Projection of course:\n");
+	GenRelList_print(project(CSGTest, "course"));
+	printf("Selection of all CS101 students:\n");
+	GenRelList_print(select(CSGTest, "course", "CS101"));
+	printf("Join of CSG and SNAP:\n");
+	GenRelList_print(join(CSGTest, SNAPTest, "studentID"));
+
+
 	writeDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
 	
 

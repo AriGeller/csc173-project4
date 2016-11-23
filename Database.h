@@ -307,33 +307,55 @@ extern void CRBaseList_add(CRBaseList *list, CRBase *data);
 
 
 typedef struct GenRel {
-	char course[6];
-	char studentID[6];
-	char grade[3];
-	char studentID[6];
-	char name[21];
-	char address[21];
-	char phone[11];
-	char prereq[6];
-	char day[3];
-	char hour[5];
-	char room[15];
+	char *course;
+	char *studentID;
+	char *grade;
+	char *name;
+	char *address;
+	char *phone;
+	char *prereq;
+	char *day;
+	char *hour;
+	char *room;
 } GenRel;
 
-typdef struct GenRelList {
+typedef struct GenRelList {
 	struct GenRelListNode *first;
 	struct GenRelListNode *last;
-}
+} GenRelList;
 
 typedef struct GenRelListNode {
 	GenRel *data;
 	struct GenRelListNode *next;
+	struct GenRelListNode *prev;
 } GenRelListNode;
 
 extern GenRelList *GenRelList_new();
 extern GenRelListNode *GenRelistNode_new(GenRel *data);
 extern void GenRelList_add(GenRelList *list, GenRel *data);
-extern GenRel *GenRel_new();
+extern GenRel *GenRel_new(char *course, char *studentID, char *grade, char *name, char *address, char *phone, char *day, char *hour, char *prereq, char *room);
+
+GenRelList *select(GenRelList *list, char *type, char *param);
+GenRelList *project(GenRelList *list, char *param);
+bool projectHelper(GenRelList *list, char *param);
+
+bool sameString(char *thing1, char *thing2);
+
+GenRelList *project(GenRelList *list, char *param);
+
+GenRelList *join(GenRelList *list1, GenRelList *list2, char *param);
+
+GenRel *combo(GenRel *rel1, GenRel *rel2);
+
+GenRelList *convert_CSG(CSGBase *database);
+
+GenRelList *convert_SNAP(SNAPBase *database);
+GenRelList *convert_CDH(CDHBase *database);
+GenRelList *convert_CP(CPBase *database);
+GenRelList *convert_CR(CRBase *database);
+
+void GenRelList_print(GenRelList *list);
+
 
 
 
