@@ -20,78 +20,33 @@ void findRoom(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, CDHBase *CDHDatabase
 
 int main(int argc, char const *argv[])
 {
+	//create empty tables to be filled with data from file
 	CSGBaseList *CSGs = CSGBaseList_new();
 	SNAPBaseList *SNAPs = SNAPBaseList_new();
 	CPBaseList *CPs = CPBaseList_new();
 	CDHBaseList *CDHs = CDHBaseList_new();
 	CRBaseList *CRs = CRBaseList_new();
 
+	//read data from file
 	readDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
-	//printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "*", "*"));
 
+	//showcase lookup functionality
+	printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "*", "*"));
+
+	//showcase delete functionality
+	delete_CSG(CSGs -> first -> data, "CS101", "33333", "*");
+	printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "33333", "*"));
+	printList_CSG(lookup_CSG(CSGs -> first -> data, "CS101", "*", "F"));
 	
-	// CSGBase *myCSGDatabase = CSGBase_new();
-	// CSGBaseList_add(CSGs, myCSGDatabase);
 
-	// insert_CSG(myCSGDatabase, "CS101", "12345", "A");
-	// insert_CSG(myCSGDatabase, "CS101", "67890", "B");
-	// insert_CSG(myCSGDatabase, "EE200", "12345", "C");
-	// insert_CSG(myCSGDatabase, "EE200", "22222", "B+");
-	// insert_CSG(myCSGDatabase, "CS101", "33333", "A-");
-	// insert_CSG(myCSGDatabase, "PH100", "67890", "C+");
-	// insert_CSG(myCSGDatabase, "CS101", "12346", "A");
-	// printList_CSG(lookup_CSG(myCSGDatabase, "*", "*", "*"));
-	// //delete_CSG(myCSGDatabase, "CS101", "12345", "*");
-	// printList_CSG(lookup_CSG(myCSGDatabase, "CS101", "12345", "*"));
-	// printList_CSG(lookup_CSG(myCSGDatabase, "CS101", "*", "F"));
+
+	//show functionality of finding grade based on name and class
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
+	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
 	
-	// SNAPBase *mySNAPDatabase = SNAPBase_new();
-	// SNAPBaseList_add(SNAPs, mySNAPDatabase);
-	// insert_SNAP(mySNAPDatabase, "12345", "C. Brown", "12 Apple St.", "555-1234");
-	// insert_SNAP(mySNAPDatabase, "67890", "L. Van Pelt", "34 Pear St.", "555-6789");
-	// insert_SNAP(mySNAPDatabase, "22222", "P. Patty", "56 Grape Blvd.", "555-9999");
-	// printList_SNAP(lookup_SNAP(mySNAPDatabase, "*", "C. Brown"));
-
-
-	// CPBase *myCPDatabase = CPBase_new();
-	// CPBaseList_add(CPs, myCPDatabase);
-	// insert_CP(myCPDatabase, "CS101", "CS100");
-	// insert_CP(myCPDatabase, "EE200", "EE005");
-	// insert_CP(myCPDatabase, "EE200", "CS100");
-	// insert_CP(myCPDatabase, "CS120", "CS101");
-	// insert_CP(myCPDatabase, "CS121", "CS120");
-	// insert_CP(myCPDatabase, "CS205", "CS101");
-	// insert_CP(myCPDatabase, "CS206", "CS121");
-	// insert_CP(myCPDatabase, "CS206", "CP205");
-	// printList_CP(lookup_CP(myCPDatabase, "*"));
-
-
-	// CDHBase *myCDHDatabase = CDHBase_new();
-	// CDHBaseList_add(CDHs, myCDHDatabase);
-	// insert_CDH(myCDHDatabase, "CS101", "M", "9AM");
-	// insert_CDH(myCDHDatabase, "CS101", "W", "9AM");
-	// insert_CDH(myCDHDatabase, "CS101", "F", "9AM");
-	// insert_CDH(myCDHDatabase, "EE200", "Tu", "10AM");
-	// insert_CDH(myCDHDatabase, "EE200", "W", "1PM");
-	// insert_CDH(myCDHDatabase, "EE200", "Th", "10AM");
-	// printList_CDH(lookup_CDH(myCDHDatabase, "*", "*", "*"));
-
-	// CRBase *myCRDatabase = CRBase_new();
-	// CRBaseList_add(CRs, myCRDatabase);
-	// insert_CR(myCRDatabase, "CS101", "Turing Atd.");
-	// insert_CR(myCRDatabase, "EE200", "25 Ohm Hall");
-	// insert_CR(myCRDatabase, "PH100", "Newton Lab.");
-	// printList_CR(lookup_CR(myCRDatabase, "*"));
-
-
-
-	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CS101");
-	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
-	// findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
-	printf("\n\n\n");
 	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
-	printf("\n\n\n");
-	//findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
+	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
 	
 	GenRelList *CSGTest = convert_CSG(CSGs -> first -> data);
 	GenRelList *SNAPTest = convert_SNAP(SNAPs -> first -> data);
@@ -101,6 +56,8 @@ int main(int argc, char const *argv[])
 	GenRelList_print(select(CSGTest, "course", "CS101"));
 	printf("Join of CSG and SNAP:\n");
 	GenRelList_print(join(CSGTest, SNAPTest, "studentID"));
+
+	
 
 
 	writeDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
@@ -413,6 +370,7 @@ void findRoom(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, CDHBase *CDHDatabase
 						if (tempCR -> first != NULL) {
 							char *room = tempCR -> first -> data -> room;
 							printf("%s is in %s room at %s on %s.\n", name, room, hour, day);
+							break;
 						} else {
 							printf("Sorry, %s never took %s.\n", name, hour);
 						}

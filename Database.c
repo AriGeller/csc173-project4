@@ -13,11 +13,15 @@
 #include "LinkedList.h"
 
 
+//methods for Basic CSG
+
+//method that creates and mallocs a new CSGBase
 CSGBase *CSGBase_new(){
 	CSGBase *new = (CSGBase*)malloc(sizeof(CSGBase));
 	return new;
 }
 
+//method that creates and mallocs a new CSG
 CSG *CSG_new(char *course, char *studentID, char *grade) {
 	CSG *new = (CSG*)malloc(sizeof(CSG));
 	for (int i = 0; i < 5; i++) {
@@ -41,12 +45,14 @@ CSG *CSG_new(char *course, char *studentID, char *grade) {
 	return new;
 }
 
+//method that creates and mallocs a new CSGLinkedList
 CSGLinkedList *CSGLinkedList_new()  {
     CSGLinkedList *list = (CSGLinkedList*)malloc(sizeof(CSGLinkedList));
     list->first = list->last = NULL;
     return list;
 }
 
+//method that creates and mallocs a new CSGLinkedListNode
 CSGLinkedListNode *CSGLinkedListNode_new(CSG *data) {
     CSGLinkedListNode *node = (CSGLinkedListNode*)malloc(sizeof(CSGLinkedListNode));
     if (node == NULL) {
@@ -57,6 +63,7 @@ CSGLinkedListNode *CSGLinkedListNode_new(CSG *data) {
     return node;
 }
 
+//adds a CSG to a CSGLinked List
 void CSGLinkedList_add(CSGLinkedList *list, CSG *data) {
 	CSGLinkedListNode *node = CSGLinkedListNode_new(data);
     node->next = list->first;
@@ -69,6 +76,7 @@ void CSGLinkedList_add(CSGLinkedList *list, CSG *data) {
     }
 }
 
+//hash function for primary index of CSG table
 int CSGHash(char* course, char *studentID) {
 	int strAsNum = 0;
 	int max = strlen(course);
@@ -78,6 +86,7 @@ int CSGHash(char* course, char *studentID) {
 	return (strAsNum + atoi(studentID)) % TABLE_LENGTH;
 }
 
+//function to check if a bucket has at least one item in it
 int isTakenCSG(CSGTable table, int index) {
 	if (table[index] == NULL) {
 		return false;
@@ -86,10 +95,12 @@ int isTakenCSG(CSGTable table, int index) {
 	}
 }
 
+//hash function for secondary CSG index on student id
 int CSGHash_id(char *studentID) {
 	return atoi(studentID) % TABLE_LENGTH;
 }
 
+//hash function for secondary CSG index on course
 int CSGHash_course(char *course) {
 	int strAsNum = 0;
 	int max = strlen(course);
@@ -99,16 +110,19 @@ int CSGHash_course(char *course) {
 	return strAsNum % TABLE_LENGTH;
 }
 
+//function to add CSGs to the database (primary and secondary indices))
 void insert_CSG(CSGBase *database, char *course, char *studentID, char *grade) {
 	
 	CSG *toAdd = CSG_new(course, studentID, grade);
 	if(CSG_add(database, CSGHash(course, studentID), toAdd, 1)) {
+		//only attempts to add to the seconary indices if it was successfully added to primary
 		CSG_add(database, CSGHash_id(studentID), toAdd, 2);
 		CSG_add(database, CSGHash_course(course), toAdd, 3);
 	}
 	
 }
 
+//adds CSGs to a table. returns true if successful
 bool CSG_add(CSGBase *database, int index, CSG *toAdd, int kind) {
 	if (kind == 1) {
 		if(!isTakenCSG(database -> table, index)) {
@@ -168,6 +182,7 @@ bool CSG_add(CSGBase *database, int index, CSG *toAdd, int kind) {
 	return true;
 }
 
+//looks up tuples from CSG table, returns all found as a linked list
 CSGLinkedList *lookup_CSG(CSGBase *database, char *course, char *studentID, char *grade) {
 	CSGLinkedList *list = CSGLinkedList_new();
 	bool courseIsStar = false;
@@ -185,7 +200,6 @@ CSGLinkedList *lookup_CSG(CSGBase *database, char *course, char *studentID, char
 	if (!courseIsStar && !idIsStar) {
 		int index = CSGHash(course, studentID);
 		if (database -> table[index] == NULL) {
-			printf("I guess it is NULL\n");
 		} else {
 			CSG *test = database -> table[index];
 			while (test != NULL) {
@@ -274,6 +288,7 @@ void printList_CSG(CSGLinkedList *list) {
 	
 }
 
+//deletes tuple from a CSG table and indices
 void delete_CSG(CSGBase *database, char *course, char *studentID, char *grade) {
 	bool courseIsStar = false;
 	bool idIsStar = false;
@@ -426,6 +441,8 @@ void delete_CSG(CSGBase *database, char *course, char *studentID, char *grade) {
 		}
 	}
 }
+
+//deletes tuple specifically from indices. called from general delete
 void deleteFromIndices_CSG(CSGBase *database, char *course, char *studentID, char *grade) {
 	for (int i = 0; i < TABLE_LENGTH; i++) {
 		if (database -> idIndex[i] != NULL) {
@@ -472,6 +489,8 @@ void deleteFromIndices_CSG(CSGBase *database, char *course, char *studentID, cha
 		}
 	}
 }
+
+//methods for a SNAP table. All functionality same as CSG.
 
 SNAPBase *SNAPBase_new(){
 	SNAPBase *new = (SNAPBase*)malloc(sizeof(SNAPBase));
@@ -786,6 +805,8 @@ void deleteFromIndices_SNAP(SNAPBase *database, char *studentID, char *name) {
 	}
 }
 
+//methods for CP tables. ALl functionality same as CSG.
+
 CPBase *CPBase_new(){
 	CPBase *new = (CPBase*)malloc(sizeof(CPBase));
 	return new;
@@ -1035,6 +1056,8 @@ void delete_CP(CPBase *database, char *course, char *prereq) {
 	}
 }
 
+
+//methods for CDH tables. All functionality same as CSG.
 
 CDHBase *CDHBase_new(){
 	CDHBase *new = (CDHBase*)malloc(sizeof(CDHBase));
@@ -1513,6 +1536,8 @@ void deleteFromIndices_CDH(CDHBase *database, char *course, char *day, char *hou
 	}
 }
 
+//methods for CR tables. All functionality same as CSG.
+
 CRBase *CRBase_new(){
 	CRBase *new = (CRBase*)malloc(sizeof(CRBase));
 	return new;
@@ -1904,12 +1929,16 @@ void CRBaseList_add(CRBaseList *list, CRBase *data) {
     }
 }
 
+//methods for creating a GeneralRelation
+
+//creates and mallocs new list of general relations
 GenRelList *GenRelList_new() {
 	GenRelList *list = (GenRelList*)malloc(sizeof(GenRelList));
     list->first = list->last = NULL;
     return list;
 }
 
+//creates and mallocs a new GenRelListNode
 GenRelListNode *GenRelListNode_new(GenRel *data) {
 	GenRelListNode *node = (GenRelListNode*)malloc(sizeof(GenRelListNode));
     if (node == NULL) {
@@ -1920,8 +1949,8 @@ GenRelListNode *GenRelListNode_new(GenRel *data) {
     return node;
 }
 
+//adds a node to a GenRelList.
 void GenRelList_add(GenRelList *list, GenRel *data) {
-	printf("inside add method\n");
 	GenRelListNode *node = GenRelListNode_new(data);
     node->next = list->first;
     if (list->first != NULL) {
@@ -1933,8 +1962,8 @@ void GenRelList_add(GenRelList *list, GenRel *data) {
     }
 }
 
+//creates a new GenRel
 GenRel *GenRel_new(char *course, char *studentID, char *grade, char *name, char *address, char *phone, char *day, char *hour, char *prereq, char *room) {
-	printf("inside new method\n");
 	GenRel *new = (GenRel*)malloc(sizeof(GenRel));
 	
 	new -> course = course;
@@ -1947,11 +1976,11 @@ GenRel *GenRel_new(char *course, char *studentID, char *grade, char *name, char 
 	new -> hour = hour;
 	new -> prereq = prereq;
 	new -> room = room;
-	printf("returning new\n");
 
 	return new;
 }
 
+//method to check if two stings are the same, first making sure that neither string is NULL.
 bool sameString(char *thing1, char *thing2) {
 	if (thing1 == NULL || thing2 == NULL) {
 		return false;
@@ -1962,10 +1991,12 @@ bool sameString(char *thing1, char *thing2) {
 	}
 }
 
+//Relational Algebra operation select. 
 GenRelList *select(GenRelList *list, char *type, char *param) {
 	GenRelList *result = GenRelList_new();
 	GenRelListNode *node = list -> first;
 	while (node != NULL) {
+		//specific checks for course and prereq because they contain the same string but mean different things
 		if (sameString(type, "prereq") && sameString(node -> data -> prereq, param)) {
 			GenRelList_add(result, node -> data);
 		} else if (sameString(type, "course") && sameString(node -> data -> course, param)) {
@@ -1979,6 +2010,7 @@ GenRelList *select(GenRelList *list, char *type, char *param) {
  	return result;
 }
 
+//Relational Algebra operation project
 GenRelList *project(GenRelList *list, char *param) {
 	GenRelList *result = GenRelList_new();
 	GenRelListNode *node = list -> first;
@@ -2010,48 +2042,36 @@ GenRelList *project(GenRelList *list, char *param) {
 	return result;
 }
 
+//method that ensures items are only added to the projection results if they aren't already in 
 bool projectHelper(GenRelList *list, char *param) {
-	printf("inside helper method\n");
 	GenRelListNode *node = list -> first;
 	if (node == NULL) {
-		printf("node is null returning false\n");
 		return true;
 	}
 	while (node != NULL) {
-		printf("inside while loop\n");
 		if (sameString(node -> data -> course, param)  || sameString(node -> data -> studentID, param) || sameString(node -> data -> grade, param) || sameString(node -> data -> name, param) || sameString(node -> data -> address, param) || sameString(node -> data -> phone, param) || sameString(node -> data -> day, param) || sameString(node -> data -> hour, param) || sameString(node -> data -> prereq, param) || sameString(node -> data -> room, param)) {
-			printf("node matches param. returining false\n");
 			return false;
 		}
 		node = node -> next;
 	}
-	printf("nothing found. returning true\n");
 	return true;
 }
 
+//Relational Algebra operation join
+
+//in our database, you can only join on studentID or course
 GenRelList *join(GenRelList *list1, GenRelList *list2, char *param){
-	printf("Inside join\n");
 	GenRelList *result = GenRelList_new();
-	printf("created result\n");
 	if (sameString(param, "course")) {
-		printf("param is course\n");
 		GenRelListNode *list1Node = list1 -> first;
-		printf("found list1Node\n");
 		while(list1Node != NULL) {
-			printf("inside first while\n");
 			GenRelListNode *list2Node = list2 -> first;
-			printf("found list2Node\n");
 			while (list2Node != NULL) {
-				printf("inside second while\n");
 				if (sameString(list1Node -> data -> course, list2Node -> data -> course)) {
-					printf("found tuples to join\n");
 					GenRelList_add(result, combo(list1Node -> data, list2Node -> data));
-					printf("after combo method\n");
 				}
-				printf("iterating list2\n");
 				list2Node = list2Node -> next;
 			}
-			printf("iterating list1\n");
 			list1Node = list1Node -> next;
 		}
 	} else if (sameString(param, "studentID")) {
@@ -2067,11 +2087,10 @@ GenRelList *join(GenRelList *list1, GenRelList *list2, char *param){
 			list1Node = list1Node -> next;
 		}
 	}
-	printf("returning result\n");
 	return result;
 }
 
-
+//method for join that creates a GenRel with all attributes of two tuples with different schemas. 
 GenRel *combo(GenRel *rel1, GenRel *rel2) {
 	char *course; 
 	char *studentID;
@@ -2157,6 +2176,7 @@ GenRel *combo(GenRel *rel1, GenRel *rel2) {
 	return GenRel_new(course, studentID, grade, name, address, phone, day, hour, prereq, room);
 }
 
+//methods for converting a specific kind of table into a General Relation table
 
 GenRelList *convert_CSG(CSGBase *database) {
 	GenRelList *result = GenRelList_new();
@@ -2243,6 +2263,7 @@ GenRelList *convert_CR(CRBase *database) {
     return result;
 }
 
+//method to print out a GenRel.
 void GenRelList_print(GenRelList *list) {
 	GenRelListNode *node = list -> first;
 	while (node != NULL) {
