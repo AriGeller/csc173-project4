@@ -45,9 +45,11 @@ int main(int argc, char const *argv[])
 	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "C. Brown", "CH200");
 	findGrade(CSGs -> first -> data, SNAPs -> first -> data, "A. Geller", "CS101");
 	
+	//show functionality of finding location of student given time
 	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "C. Brown", "9AM","M");
 	findRoom(CSGs -> first -> data, SNAPs -> first -> data, CDHs -> first -> data, CRs -> first -> data, "P. Patty", "10AM","Th");
 	
+	//show Relational Algebra functionality
 	GenRelList *CSGTest = convert_CSG(CSGs -> first -> data);
 	GenRelList *SNAPTest = convert_SNAP(SNAPs -> first -> data);
 	printf("Projection of course:\n");
@@ -59,13 +61,13 @@ int main(int argc, char const *argv[])
 
 	
 
-
+	//write the database to a file (to preserve any changes; none happen in the program the way it is now)
 	writeDatabase(CSGs, SNAPs, CPs, CDHs, CRs);
 	
 
 }
 
-
+//method to save database to a file
 void writeDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBaseList *CDHs, CRBaseList *CRs) {
 	FILE *fp;
 	fp = fopen("database.txt", "w");
@@ -96,6 +98,7 @@ void writeDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHB
 				SNAP *toWrite = SNAPNode -> data -> table[i];
 				while (toWrite != NULL) {
 					for (int i = 0; i < strlen(toWrite -> name); i++) {
+						//replace spaces in an item with @ for reading purposes
 						if (toWrite -> name[i] == ' ') {
 							toWrite -> name[i] = '@';
 						}
@@ -177,7 +180,7 @@ void writeDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHB
 
 }
 
-
+//function to read in data from a file 
 void readDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBaseList *CDHs, CRBaseList *CRs) {
 	FILE *fp;
 	fp = fopen("database.txt", "r");
@@ -329,6 +332,7 @@ void readDatabase(CSGBaseList *CSGs, SNAPBaseList *SNAPs, CPBaseList *CPs, CDHBa
 	fscanf(fp, "%s\n", input);
 }
 
+//method to find grade given name and course
 void findGrade(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, char *name, char *course) {
 	SNAPLinkedList *tempSnap = lookup_SNAP(SNAPDatabase, "*", name);
 	if (tempSnap -> first != NULL) {
@@ -351,7 +355,7 @@ void findGrade(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, char *name, char *c
 
 }
 
-
+//method to find location of student given name and time
 void findRoom(CSGBase *CSGDatabase, SNAPBase *SNAPDatabase, CDHBase *CDHDatabase, CRBase *CRDatabase, char *name, char *hour,char *day) {
 	SNAPLinkedList *tempSnap = lookup_SNAP(SNAPDatabase, "*", name);
 	if (tempSnap -> first != NULL) {
